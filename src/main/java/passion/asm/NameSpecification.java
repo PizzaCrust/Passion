@@ -42,6 +42,9 @@ public class NameSpecification {
 
     private void transformPrimitives() {
         switch (jvm()) {
+            case "void":
+                className = "V";
+                break;
             case "boolean":
                 className = "Z";
                 break;

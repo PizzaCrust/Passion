@@ -41,6 +41,10 @@ public class BytecodeMethod implements EndpointService {
         return invocations;
     }
 
+    public MethodDescriptor getDescriptor() {
+        return new MethodDescriptor(methodNode.name, methodNode.desc);
+    }
+
     @Override
     public List<Endpoint> getAllEndpoints() {
         List<Endpoint> endpoints = new ArrayList<>();

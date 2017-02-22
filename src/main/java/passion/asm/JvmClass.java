@@ -1,8 +1,13 @@
 package passion.asm;
 
 import org.objectweb.asm.ClassReader;
+import org.objectweb.asm.ClassWriter;
 import org.objectweb.asm.tree.ClassNode;
 
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.StandardOpenOption;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -47,6 +52,17 @@ public class JvmClass {
         ClassNode classNode = new ClassNode();
         classReader.accept(classNode, 0);
         return classNode;
+    }
+
+    public byte[] toBytes() {
+        ClassWriter classWriter = new ClassWriter(0);
+        handle.accept(classWriter);
+        return classWriter.toByteArray();
+    }
+
+    public void toFile(File file) throws IOException {
+        Files.write(file.toPath(), toBytes(), StandardOpenOption.CREATE, StandardOpenOption
+                .TRUNCATE_EXISTING);
     }
 
     public JvmClass(byte[] bytes) {
