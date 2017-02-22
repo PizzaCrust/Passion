@@ -76,6 +76,22 @@ public interface FileEnvironment {
     }
 
     /**
+     * Lists all the files recursively selected by the selector.
+     * @param selector
+     * @return
+     */
+    default List<EnvFile> recursivelyListFiles(Predicate<EnvFile> selector) {
+        List<EnvFile> envFiles = recursivelyListFiles();
+        List<EnvFile> selected = new ArrayList<>();
+        envFiles.forEach((envFile -> {
+            if (selector.test(envFile)) {
+                selected.add(envFile);
+            }
+        }));
+        return selected;
+    }
+
+    /**
      * Recursively lists files in the environment.
      * @return
      */

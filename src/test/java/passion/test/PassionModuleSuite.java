@@ -8,7 +8,8 @@ import org.junit.runners.Suite;
         AsmMethodTest.class,
         SrgRemappingTest.class,
         FileUtilsTest.class,
-
+        FileEnvironmentTest.class,
+        ClasspathTest.class
 })
 public class PassionModuleSuite {
 }

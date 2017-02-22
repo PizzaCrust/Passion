@@ -40,6 +40,11 @@ public class NameSpecification {
         return className.replace('/', '.');
     }
 
+    @Override
+    public String toString() {
+        return reflect();
+    }
+
     private void transformPrimitives() {
         switch (jvm()) {
             case "void":
