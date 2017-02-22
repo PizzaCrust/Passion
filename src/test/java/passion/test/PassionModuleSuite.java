@@ -9,7 +9,8 @@ import org.junit.runners.Suite;
         SrgRemappingTest.class,
         FileUtilsTest.class,
         FileEnvironmentTest.class,
-        ClasspathTest.class
+        ClasspathTest.class,
+        HashTest.class
 })
 public class PassionModuleSuite {
 }
