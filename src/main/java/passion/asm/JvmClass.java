@@ -1,5 +1,6 @@
 package passion.asm;
 
+import org.objectweb.asm.ClassReader;
 import org.objectweb.asm.tree.ClassNode;
 
 import java.util.ArrayList;
@@ -39,6 +40,17 @@ public class JvmClass {
         handle = classNode;
         classNode.fields.forEach((fieldNode -> fields.add(new BytecodeField(fieldNode))));
         classNode.methods.forEach((methodNode -> methods.add(new BytecodeMethod(methodNode))));
+    }
+
+    private static ClassNode read(byte[] bytes) {
+        ClassReader classReader = new ClassReader(bytes);
+        ClassNode classNode = new ClassNode();
+        classReader.accept(classNode, 0);
+        return classNode;
+    }
+
+    public JvmClass(byte[] bytes) {
+        this(read(bytes));
     }
 
 }
