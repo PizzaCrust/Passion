@@ -8,6 +8,14 @@
     <artifactId>Passion</artifactId>
     <version>1.0</version>
 
+    <distributionManagement>
+        <repository>
+            <id>bintray</id>
+            <name>pizzacrust-Passion</name>
+            <url>https://api.bintray.com/maven/pizzacrust/Passion/Passion/;publish=1</url>
+        </repository>
+    </distributionManagement>
+
     <build>
         <plugins>
             <plugin>
