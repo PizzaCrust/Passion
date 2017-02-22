@@ -6,7 +6,9 @@ import org.junit.runners.Suite;
 @RunWith(Suite.class)
 @Suite.SuiteClasses({
         AsmMethodTest.class,
-        SrgRemappingTest.class
+        SrgRemappingTest.class,
+        FileUtilsTest.class,
+
 })
 public class PassionModuleSuite {
 }
