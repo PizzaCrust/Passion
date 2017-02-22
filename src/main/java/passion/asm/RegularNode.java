@@ -22,6 +22,10 @@ public class RegularNode implements InstructionNode {
         this.methodNode = methodNode;
     }
 
+    public <T extends AbstractInsnNode> T getHandle() {
+        return (T) insnNode;
+    }
+
     @Override
     public void insertBefore(List<InstructionNode> instructionNodes) {
         methodNode.instructions.insertBefore(asm(), Endpoint.from(instructionNodes));
