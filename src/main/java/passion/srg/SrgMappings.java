@@ -28,6 +28,35 @@ public class SrgMappings {
 
     public SrgMappings() {}
 
+    public void putClass(String a1, String a2) {
+        getClasses().put(new NameSpecification(a1).jvm(), new NameSpecification(a2).jvm());
+    }
+
+    public Map<String, String> getClasses() {
+        return classes;
+    }
+
+    public Map<String, String> getPackages() {
+        return packages;
+    }
+
+    public Map<SrgField, SrgField> getFields() {
+        return fields;
+    }
+
+    public Map<SrgMethod, SrgMethod> getMethods() {
+        return methods;
+    }
+
+    public List<String> lines() {
+        List<String> lines = new ArrayList<>();
+        forEachPackage((pack1, pack2) -> lines.add("PK: " + pack1 + " " + pack2));
+        forEachClass((c1, c2) -> lines.add("CL: " + c1 + " " + c2));
+        forEachField((f1, f2) -> lines.add("FD: " + f1.toString() + " " + f2.toString()));
+        forEachMethod((m1, m2) -> lines.add("MD: " + m1.toString() + " " + m2.toString()));
+        return lines;
+    }
+
     public SrgMappings(File file) throws IOException {
         Files.readAllLines(file.toPath()).forEach((line) -> {
             String[] splitted = line.split(" ");
@@ -73,7 +102,7 @@ public class SrgMappings {
     /**
      * Remaps methods from their descriptors into their remapped forms.
      */
-    public void remapMethods() {
+    public void remapMethodDescriptors() {
         forEachMethod((method, method1) -> {
             List<NameSpecification> remappedParameters = new ArrayList<>();
             for (NameSpecification nameSpecification : method1.getMethodDescriptor().getArguments()) {
