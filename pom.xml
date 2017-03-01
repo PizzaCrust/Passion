@@ -6,7 +6,7 @@
 
     <groupId>online.pizzacrust</groupId>
     <artifactId>Passion</artifactId>
-    <version>1.0</version>
+    <version>2.0-SNAPSHOT</version>
 
     <distributionManagement>
         <repository>
@@ -14,6 +14,11 @@
             <name>pizzacrust-Passion</name>
             <url>https://api.bintray.com/maven/pizzacrust/Passion/Passion/;publish=1</url>
         </repository>
+        <snapshotRepository>
+            <id>snapshots</id>
+            <name>oss-jfrog-artifactory-snapshots</name>
+            <url>https://oss.jfrog.org/artifactory/oss-snapshot-local</url>
+        </snapshotRepository>
     </distributionManagement>
 
     <build>
