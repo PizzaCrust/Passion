@@ -10,7 +10,7 @@
 
 ## Resolving
 
-**Passion** has been published on JCenter. You can access this library using Maven, similarily to this:
+**Passion** has been published on JCenter. You can access this library using Maven, similarly to this:
 ```xml
 <repositories>
    <repository>
@@ -24,6 +24,24 @@
     <groupId>online.pizzacrust</groupId>
     <artifactId>Passion</artifactId>
     <version>1.0</version>
+  </dependency>
+</dependencies>
+```
+
+Feel brave? Test out new features using snapshots. You can access them using Maven, similarly to this:
+```xml
+<repositories>
+  <repository>
+    <id>jfrog</id>
+    <url>https://oss.jfrog.org/artifactory/oss-snapshot-local</url>
+  </repository>
+</repositories>
+
+<dependencies>
+  <dependency>
+    <groupId>online.pizzacrust</groupId>
+    <artifactId>Passion</artifactId>
+    <version>2.0-SNAPSHOT</version>
   </dependency>
 </dependencies>
 ```
