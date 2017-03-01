@@ -24,9 +24,33 @@ public class ListUtils {
         List<List<T>> partitions = new ArrayList<>();
         final int algebraN = list.size();
         for (int i = 0; i < algebraN; i += partitionSize) {
-            partitions.add(list.subList(i, Math.min(algebraN, i + partitionSize)));
+            partitions.add(new ArrayList<T>(list.subList(i, Math.min(algebraN, i + partitionSize)
+            )));
         }
         return partitions;
+    }
+
+    /**
+     * Determines whether the specified index is not null in the specified list.
+     * @param index
+     * @param objects
+     * @return
+     */
+    public static boolean containsIndex(int index, List<?> objects) {
+        if (objects.size() >= index) {
+            for (int i = 0; i < objects.size(); i++) {
+                if (i == index) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    public static <T> List<T> combine(List<List<T>> lists) {
+        List<T> majorList = new ArrayList<T>();
+        lists.forEach(majorList::addAll);
+        return majorList;
     }
 
     /**
@@ -81,6 +105,9 @@ public class ListUtils {
         Optional<Integer> get10 = cartesianSelection(4, 1, 5, otherList);
         System.out.println(get10.get());
         assert get10.isPresent() && get10.get() == 10;
+        List<Integer> otherList2 = Arrays.asList(0, 1);
+        System.out.println(containsIndex(0, otherList2) + " : " + containsIndex(1, otherList2)
+                + " : " + containsIndex(2, otherList2));
     }
 
 }
