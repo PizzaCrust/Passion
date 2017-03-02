@@ -6,6 +6,7 @@ import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.Method;
 import java.net.URL;
+import java.security.CodeSource;
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.List;
@@ -38,12 +39,13 @@ public class Classpath {
      * @param jvmClass
      * @throws Exception
      */
-    public void loadClass(JvmClass jvmClass) throws Exception {
-        Method defineClassMethod = classLoader.getClass().getDeclaredMethod("defineClass", String
+    public Class<?> loadClass(JvmClass jvmClass) throws Exception {
+        Method defineClassMethod = ClassLoader.class.getDeclaredMethod("defineClass", String
                 .class, byte[].class, int.class, int.class);
         String name = jvmClass.getName().reflect();
         defineClassMethod.setAccessible(true);
-        defineClassMethod.invoke(classLoader, name, jvmClass.toBytes(), 0, jvmClass.toBytes()
+        return (Class<?>) defineClassMethod.invoke(classLoader, name, jvmClass.toBytes(), 0, jvmClass
+                .toBytes()
                 .length);
     }
 
