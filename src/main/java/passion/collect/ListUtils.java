@@ -2,6 +2,7 @@ package passion.collect;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Enumeration;
 import java.util.List;
 import java.util.Optional;
 
@@ -47,6 +48,29 @@ public class ListUtils {
         return false;
     }
 
+    /**
+     * Creates a {@link List} from a {@link Enumeration}.
+     * @param enumeration
+     * @param <T>
+     * @return
+     */
+    public static <T> List<T> createFrom(Enumeration<T> enumeration) {
+        List<T> list = new ArrayList<T>();
+        while (enumeration.hasMoreElements()) {
+            T object = enumeration.nextElement();
+            if (object != null) {
+                list.add(object);
+            }
+        }
+        return list;
+    }
+
+    /**
+     * Combines a bunch of lists inside of a large list.
+     * @param lists
+     * @param <T>
+     * @return
+     */
     public static <T> List<T> combine(List<List<T>> lists) {
         List<T> majorList = new ArrayList<T>();
         lists.forEach(majorList::addAll);
