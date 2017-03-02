@@ -1,6 +1,7 @@
 package passion.collect;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Comparator;
 import java.util.List;
@@ -37,11 +38,7 @@ public abstract class ImmutableList<T> extends ImmutableCollection<T> implements
     }
 
     public static <T> ImmutableList<T> constructFrom(T... ts) {
-        List<T> ts1 = new ArrayList<T>();
-        for (T t : ts) {
-            ts1.add(t);
-        }
-        return constructFrom(ts1);
+        return constructFrom(Arrays.asList(ts));
     }
 
     @Override
