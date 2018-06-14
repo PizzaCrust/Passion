@@ -12,6 +12,7 @@ import java.util.function.BiConsumer;
 import javafx.util.Pair;
 import passion.asm.MethodDescriptor;
 import passion.asm.NameSpecification;
+import passion.collect.ListUtils;
 
 /**
  * Represents SRG mappings.
@@ -57,8 +58,8 @@ public class SrgMappings {
         return lines;
     }
 
-    public SrgMappings(File file) throws IOException {
-        Files.readAllLines(file.toPath()).forEach((line) -> {
+    public SrgMappings(String[] lines) {
+        for (String line : lines) {
             String[] splitted = line.split(" ");
             if (line.startsWith("PK")) {
                 packages.put(splitted[1], splitted[2]);
@@ -80,7 +81,70 @@ public class SrgMappings {
                 methods.put(new SrgMethod(pair.getKey(), pair.getValue(), descriptor.getDescriptor()), new
                         SrgMethod(pair.getKey(), pair.getValue(), descriptor1.getDescriptor()));
             }
-        });
+        }
+    }
+
+    public SrgMappings(File file) throws IOException {
+        this((String[]) Files.readAllLines(file.toPath()).toArray());
+    }
+
+    public SrgMappings(String classMappings,
+                       String memberMappings) {
+        for (String s : classMappings.split("\\r?\\n")) {
+            if (s.startsWith("#")) continue;
+            classes.put(s.split(" ")[0], s.split(" ")[1]);
+        }
+        for (String s : memberMappings.split("\\r?\\n")) {
+            String[] splitted = s.split(" ");
+            if (splitted.length == 3) {
+                String deobfClassName = splitted[0];
+                Map<String, String> deobfToObf = ListUtils.invert(getClasses());
+                if (!deobfToObf.containsKey(deobfClassName)) {
+                    System.out.println("ERROR: Could not find " + deobfClassName + " obfuscated " +
+                            "mapping!");
+                    continue;
+                }
+                String obfClassName = deobfToObf.get(deobfClassName);
+                String obfName = splitted[1];
+                String deobfName = splitted[2];
+                fields.put(new SrgField(obfClassName, obfName), new SrgField(deobfClassName,
+                        deobfName));
+                continue;
+            }
+            if (splitted.length == 4) {
+                String deobfClassName = splitted[0];
+                Map<String, String> deobfToObf = ListUtils.invert(getClasses());
+                if (!deobfToObf.containsKey(deobfClassName)) {
+                    System.out.println("ERROR: Could not find " + deobfClassName + " obfuscated " +
+                            "mapping!");
+                    continue;
+                }
+                String obfClassName = deobfToObf.get(deobfClassName);
+                String obfMethodName = splitted[1];
+                String remappedDescriptor = splitted[2];
+                String deobfMethodName = splitted[3];
+                MethodDescriptor methodDescriptor = new MethodDescriptor(obfMethodName,
+                        remappedDescriptor);
+                NameSpecification returnType = methodDescriptor.getReturnType();
+                if (deobfToObf.containsKey(methodDescriptor.getReturnType().jvm())) {
+                    returnType = new NameSpecification(deobfToObf.get(methodDescriptor
+                            .getReturnType().jvm()));
+                }
+                List<NameSpecification> remappedParameters = new ArrayList<>();
+                for (NameSpecification nameSpecification : methodDescriptor.getArguments()) {
+                    if (deobfToObf.containsKey(nameSpecification.jvm())) {
+                        remappedParameters.add(new NameSpecification(deobfToObf.get(nameSpecification
+                                .jvm())));
+                    } else {
+                        remappedParameters.add(nameSpecification);
+                    }
+                }
+                String obfDescriptor = new MethodDescriptor(returnType, remappedParameters.toArray
+                        (new NameSpecification[remappedDescriptor.length()])).getDescriptor();
+                methods.put(new SrgMethod(obfClassName, obfMethodName, obfDescriptor), new
+                        SrgMethod(deobfClassName, deobfMethodName, remappedDescriptor));
+            }
+        }
     }
 
     public void forEachMethod(BiConsumer<SrgMethod, SrgMethod> consumer) {

@@ -20,8 +20,9 @@ public abstract class SrgMember {
     }
 
     public static Pair<String, String> parseMember(String line) {
-        String[] splitted = line.split("/");
-        return new Pair<>(splitted[0], splitted[1]);
+        String owner = line.substring(0, line.lastIndexOf("/"));
+        String name = line.substring(line.lastIndexOf("/") + 1);
+        return new Pair<>(owner, name);
     }
 
     public NameSpecification getOwner() {
