@@ -12,7 +12,7 @@ import passion.asm.NameSpecification;
 public abstract class SrgMember {
 
     private final NameSpecification owner;
-    private final String name;
+    private String name;
 
     public SrgMember(NameSpecification owner, String name) {
         this.owner = owner;
@@ -23,6 +23,10 @@ public abstract class SrgMember {
         String owner = line.substring(0, line.lastIndexOf("/"));
         String name = line.substring(line.lastIndexOf("/") + 1);
         return new Pair<>(owner, name);
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public NameSpecification getOwner() {
